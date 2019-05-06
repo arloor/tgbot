@@ -1,0 +1,11 @@
+{
+  "banWords": [
+    "包含banwords的消息",
+    "都将被机器人删除",
+    "ps:机器人需要具有管理员权限才能删除消息"
+  ],
+  "thankForUse": "谢谢使用本机器人",
+  "botID": 123456789,
+  "deleteDelay": 30,
+  "botToken": "联系 电报@BotFather /token 获取你的机器人token"
+}
