@@ -2,6 +2,7 @@ package com.arloor.tgbot.tasks;
 
 import com.arloor.tgbot.domain.Config;
 import com.arloor.tgbot.domain.DelayDeleteMessage;
+import com.arloor.tgbot.domain.DelayDeletor;
 import com.arloor.tgbot.domain.Task;
 import com.arloor.tgbot.workers.Worker;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -88,8 +89,8 @@ public class ReplyTask extends Task {
                     DeleteMessage replyToDelete=new DeleteMessage().setChatId(update.getMessage().getChatId()).setMessageId(msg.getMessageId());
                     DeleteMessage rawToDelete=new DeleteMessage().setChatId(update.getMessage().getChatId()).setMessageId(update.getMessage().getMessageId());
                     long timeStamp=System.currentTimeMillis();
-                    Worker.toDelete.add(new DelayDeleteMessage(timeStamp+deleteDelay,rawToDelete,sender));
-                    Worker.toDelete.add(new DelayDeleteMessage(timeStamp+deleteDelay ,replyToDelete,sender));
+                    DelayDeletor.addToDelete(new DelayDeleteMessage(timeStamp+deleteDelay,rawToDelete,sender));
+                    DelayDeletor.addToDelete(new DelayDeleteMessage(timeStamp+deleteDelay ,replyToDelete,sender));
                 }
             } catch (TelegramApiException e) {
                 e.printStackTrace();
