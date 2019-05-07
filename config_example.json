@@ -4,6 +4,7 @@
     "都将被机器人删除",
     "ps:机器人需要具有管理员权限才能删除消息"
   ],
+  "botName": "@xxxx_Bot",
   "thankForUse": "谢谢使用本机器人",
   "botID": 123456789,
   "deleteDelay": 30,

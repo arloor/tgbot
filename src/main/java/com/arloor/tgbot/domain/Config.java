@@ -10,6 +10,7 @@ public class Config {
     private String botToken;
     private String thankForUse;
     private int botID;
+    private String botName;
     private int deleteDelay;
     private List<String> banWords;
     public final static Config instacne=init();
@@ -37,6 +38,14 @@ public class Config {
             e.printStackTrace();
         }
         return instance;
+    }
+
+    public String getBotName() {
+        return botName;
+    }
+
+    public void setBotName(String botName) {
+        this.botName = botName;
     }
 
     public int getDeleteDelay() {
