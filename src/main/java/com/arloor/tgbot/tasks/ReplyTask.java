@@ -9,9 +9,13 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -33,6 +37,40 @@ public class ReplyTask extends Task {
     private static String bug="草信-BUG建议 https://wj.qq.com/s2/3258407/cc9b/";
 
     private static int deleteDelay=Config.instacne.getDeleteDelay()*1000;
+    private static InlineKeyboardMarkup inlineKeyboardMarkup;
+
+    static {
+
+        List<List<InlineKeyboardButton>> buttons=new LinkedList<>();
+
+        List<InlineKeyboardButton> line1=new LinkedList<>();
+        line1.add(new InlineKeyboardButton().setText("挖矿题库").setUrl("http://cao.chat/mines/"));
+        line1.add(new InlineKeyboardButton().setText("分红说明").setUrl("http://cao.chat/dividends/"));
+
+
+        buttons.add(line1);
+
+        List<InlineKeyboardButton> line2=new LinkedList<>();
+        line2.add(new InlineKeyboardButton().setText("挖矿机制").setUrl("http://cao.chat/mine/"));
+        line2.add(new InlineKeyboardButton().setText("邀请机制").setUrl("http://cao.chat/invite/"));
+        line2.add(new InlineKeyboardButton().setText("公社攻略").setUrl("http://caoliu.one/guide/"));
+        buttons.add(line2);
+
+        List<InlineKeyboardButton> line3=new LinkedList<>();
+        line3.add(new InlineKeyboardButton().setText("界面介绍").setUrl("http://caoliu.one/caochat1/"));
+        line3.add(new InlineKeyboardButton().setText("微信客服").setUrl("http://caoliu.one/weixin/"));
+        line3.add(new InlineKeyboardButton().setText("官方承兑商").setUrl("http://caoliu.one/ex/"));
+        buttons.add(line3);
+
+        List<InlineKeyboardButton> line4=new LinkedList<>();
+        line4.add(new InlineKeyboardButton().setText("问题回答").setUrl("http://cao.chat/qa/"));
+        line4.add(new InlineKeyboardButton().setText("官方公告").setUrl("http://caoliu.one/blog/"));
+        line4.add(new InlineKeyboardButton().setText("BUG建议").setUrl("https://wj.qq.com/s2/3258407/cc9b/"));
+        buttons.add(line4);
+
+        inlineKeyboardMarkup=new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.setKeyboard(buttons);
+    }
 
 
     public ReplyTask(Update update, AbsSender sender) {
@@ -46,10 +84,32 @@ public class ReplyTask extends Task {
 
         String temp;
         String text=update.getMessage().getText();
+
+
+
         //群组内只处理以 / 开头的东西
         if(text.startsWith("/")||update.getMessage().getChat().isUserChat()){
             if(text.startsWith("/qa")){
                 temp=QA;
+            }else if(text.startsWith("/help")){
+                SendMessage tt = new SendMessage() // Create a SendMessage object with mandatory fields
+                        .setChatId(update.getMessage().getChatId())
+                        .setText("感谢使用本助手\n我知道的都在下面哦！\n更有 *挖矿答题题库* 赠与君~")
+                        .setReplyToMessageId(update.getMessage().getMessageId())
+                        .setParseMode("Markdown")
+                        .setReplyMarkup(inlineKeyboardMarkup)
+                        ;
+                try {
+                    Message msg=sender.execute(tt); // Call method to send the message
+                    DeleteMessage replyToDelete=new DeleteMessage().setChatId(update.getMessage().getChatId()).setMessageId(msg.getMessageId());
+                    DeleteMessage rawToDelete=new DeleteMessage().setChatId(update.getMessage().getChatId()).setMessageId(update.getMessage().getMessageId());
+                    long timeStamp=System.currentTimeMillis();
+                    DelayDeletor.addToDelete(new DelayDeleteMessage(timeStamp+deleteDelay,rawToDelete,sender));
+                    DelayDeletor.addToDelete(new DelayDeleteMessage(timeStamp+deleteDelay ,replyToDelete,sender));
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+                return;
             }else if(text.startsWith("/invite")){
                 temp=invite;
             }else if(text.startsWith("/mines")){
@@ -77,8 +137,8 @@ public class ReplyTask extends Task {
             }else if(text.startsWith("/caochat3")){
                 temp=caochat3;
             }else if(text.startsWith("/start")){
-                temp="我是机器人“草信助手”，欢迎使用！";
-            }else temp="助手正在成长中，请不要玩坏机器人...";
+                temp="我是机器人“草信助手”，欢迎使用！\n试试输入“/help”吧🐷🐷";
+            }else temp="试试输入“/help”吧🐷🐷";
             SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
                     .setChatId(update.getMessage().getChatId())
                     .setText(temp);
@@ -100,15 +160,5 @@ public class ReplyTask extends Task {
 
     }
 
-    private Queue<ToDeleteMessage> queue=new ConcurrentLinkedDeque<>();
 
-    private static class ToDeleteMessage{
-        long timestamp;
-        DeleteMessage msg;
-
-        public ToDeleteMessage(long timestamp, DeleteMessage msg) {
-            this.timestamp = timestamp;
-            this.msg = msg;
-        }
-    }
 }
