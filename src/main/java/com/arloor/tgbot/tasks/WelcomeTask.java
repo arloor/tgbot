@@ -11,7 +11,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.List;
 
 public class WelcomeTask extends Task {
-    String format="【%s %s】 欢迎来到 %s ！";
+    String format="【%s %s】 欢迎来到 %s ！\n输入“/help”试试吧";
 
     public WelcomeTask(Update update, AbsSender sender) {
         super(update, sender);
@@ -26,7 +26,8 @@ public class WelcomeTask extends Task {
                 if(user.getId()!= Config.instacne.getBotID()){
                     SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
                             .setChatId(update.getMessage().getChatId())
-                            .setText(String.format(format,user.getFirstName(),user.getLastName(),update.getMessage().getChat().getTitle()));
+                            .setReplyToMessageId(update.getMessage().getMessageId())
+                            .setText(String.format(format,user.getFirstName(),user.getLastName()==null?"":user.getLastName(),update.getMessage().getChat().getTitle()));
                     try {
                         sender.execute(message); // Call method to send the message
                     } catch (TelegramApiException e) {
