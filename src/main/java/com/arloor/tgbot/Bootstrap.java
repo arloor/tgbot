@@ -32,7 +32,6 @@ public class Bootstrap {
         }
         ImBot bot = new ImBot(botOptions);
 
-        bot.initBot();
         botsApi.registerBot(bot);
     }
 }
