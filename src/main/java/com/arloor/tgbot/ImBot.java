@@ -1,12 +1,15 @@
 package com.arloor.tgbot;
 
 import com.arloor.tgbot.domain.Config;
+import com.arloor.tgbot.domain.DelayDeleteMessage;
+import com.arloor.tgbot.domain.DelayDeletor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.*;
 
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -100,7 +103,10 @@ public class ImBot extends TelegramLongPollingBot {
                         .setChatId(rawMessage.getChatId())
                         .setText("转发完毕🤣!");
                 try {
-                    execute(message);
+                    Message result=execute(message);
+                    DeleteMessage deleteMessage=new DeleteMessage()
+                            .setMessageId(result.getMessageId()).setChatId(message.getChatId());
+                    DelayDeletor.addToDelete(new DelayDeleteMessage(10,deleteMessage,this));
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
