@@ -31,8 +31,6 @@ public class Bootstrap {
             botOptions.setProxyType(DefaultBotOptions.ProxyType.SOCKS5);
         }
         ImBot bot = new ImBot(botOptions);
-
-        bot.initBot();
         botsApi.registerBot(bot);
     }
 }

@@ -19,9 +19,9 @@ import java.util.List;
 public class ReplyTask extends Task {
 
     private static int deleteDelay = Config.instacne.getDeleteDelay() * 1000;
-    private static InlineKeyboardMarkup inlineKeyboardMarkup;
+    public static InlineKeyboardMarkup inlineKeyboardMarkup=init();
 
-    static {
+    private static InlineKeyboardMarkup init() {
 
         List<List<InlineKeyboardButton>> buttons = new LinkedList<>();
 
@@ -48,8 +48,9 @@ public class ReplyTask extends Task {
         line4.add(new InlineKeyboardButton().setText("BUG建议").setUrl("https://wj.qq.com/s2/3258407/cc9b/"));
         buttons.add(line4);
 
-        inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(buttons);
+        return  inlineKeyboardMarkup;
     }
 
 
