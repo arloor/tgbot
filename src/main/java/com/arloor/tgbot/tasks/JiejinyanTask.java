@@ -3,6 +3,8 @@ package com.arloor.tgbot.tasks;
 import com.alibaba.fastjson.JSONObject;
 import com.arloor.tgbot.domain.Config;
 import com.arloor.tgbot.domain.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.RestrictChatMember;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -25,6 +27,9 @@ public class JiejinyanTask extends Task {
     public JiejinyanTask(Update update, AbsSender sender) {
         super(update, sender);
     }
+    private static Logger logger= LoggerFactory.getLogger("加群验证");
+
+
 
     @Override
     public void run() {
@@ -59,6 +64,8 @@ public class JiejinyanTask extends Task {
 //                    DeleteMessage replyToDelete = new DeleteMessage().setChatId(callback.getMessage().getChatId()).setMessageId(callback.getMessage().getMessageId());
                     try {
                         sender.execute(jiejinyan);// Call method to send the message
+                        User user=update.getCallbackQuery().getFrom();
+                        logger.info("通过："+user.getUserName()+"|"+user.getFirstName()+" "+user.getLastName()+"|"+user.getId());
 //                        sender.execute(replyToDelete);
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
