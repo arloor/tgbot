@@ -56,18 +56,15 @@ public class JiejinyanTask extends Task {
                     jiejinyan.setChatId(update.getCallbackQuery().getMessage().getChatId());
                     jiejinyan.setUserId(update.getCallbackQuery().getFrom().getId());
 
-                    DeleteMessage replyToDelete = new DeleteMessage().setChatId(callback.getMessage().getChatId()).setMessageId(callback.getMessage().getMessageId());
+//                    DeleteMessage replyToDelete = new DeleteMessage().setChatId(callback.getMessage().getChatId()).setMessageId(callback.getMessage().getMessageId());
                     try {
                         sender.execute(jiejinyan);// Call method to send the message
-                        sender.execute(replyToDelete);
+//                        sender.execute(replyToDelete);
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
                     }
                 }
             }
-
-
-
         }
     }
 }
