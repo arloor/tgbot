@@ -28,6 +28,7 @@ public class ReplyTask extends Task {
         List<InlineKeyboardButton> line1 = new LinkedList<>();
         line1.add(new InlineKeyboardButton().setText("挖矿题库").setUrl("http://cao.chat/mines/"));
         line1.add(new InlineKeyboardButton().setText("分红说明").setUrl("http://cao.chat/dividends/"));
+        line1.add(new InlineKeyboardButton().setText("交易功能").setUrl("http://caoliu.one/caochat6"));
         buttons.add(line1);
 
         List<InlineKeyboardButton> line2 = new LinkedList<>();

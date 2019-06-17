@@ -23,7 +23,8 @@ public class ImBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         // We check if the update has a message and the message has text
         if (update.hasMessage()&&!update.getMessage().getNewChatMembers().isEmpty()){
-            Worker.handler(new WelcomeTask(update,this));
+            //禁言
+//            Worker.handler(new WelcomeTask(update,this));
         }
         if(update.hasCallbackQuery()) {
             Worker.handler(new JiejinyanTask(update, this));
