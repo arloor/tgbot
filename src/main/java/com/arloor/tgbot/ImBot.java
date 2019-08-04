@@ -1,18 +1,12 @@
 package com.arloor.tgbot;
 
-import com.alibaba.fastjson.JSONObject;
 import com.arloor.tgbot.domain.Config;
 import com.arloor.tgbot.tasks.DeleteBanWordTask;
-import com.arloor.tgbot.tasks.JiejinyanTask;
 import com.arloor.tgbot.tasks.ReplyTask;
-import com.arloor.tgbot.tasks.WelcomeTask;
 import com.arloor.tgbot.workers.Worker;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.groupadministration.RestrictChatMember;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class ImBot extends TelegramLongPollingBot {
     public ImBot(DefaultBotOptions options) {
@@ -27,7 +21,7 @@ public class ImBot extends TelegramLongPollingBot {
 //            Worker.handler(new WelcomeTask(update,this));
         }
         if(update.hasCallbackQuery()) {
-            Worker.handler(new JiejinyanTask(update, this));
+//            Worker.handler(new JiejinyanTask(update, this));
         }
 
         if (update.hasMessage() && update.getMessage().hasText()) {
